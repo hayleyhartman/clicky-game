@@ -1,0 +1,11 @@
+.nav {
+    background-color: grey !important;
+}
+
+.title {
+    float: left;
+}
+
+.score {
+    float: right;
+}
