@@ -1,22 +1,15 @@
-const shuffler = (array) => {
-    let currentIndex = array.length 
+const shuffler = (a) => {
+    let currentIndex = a.length
     let temporaryValue = currentIndex
-    let randomIndex = temporaryValue;
-  
-    // While there remain elements to shuffle...
+    let randomIndex = temporaryValue;  
     while (0 !== currentIndex) {
-  
-      // Pick a remaining element...
       randomIndex = Math.floor(Math.random() * currentIndex);
       currentIndex -= 1;
-  
-      // And swap it with the current element.
-      temporaryValue = array[currentIndex];
-      array[currentIndex] = array[randomIndex];
-      array[randomIndex] = temporaryValue;
+      temporaryValue = a[currentIndex];
+      a[currentIndex] = a[randomIndex];
+      a[randomIndex] = temporaryValue;
     }
-    console.log(array)
-    return array;
+    return a;
   }
 
   export default shuffler

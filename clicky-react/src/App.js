@@ -5,7 +5,7 @@ import Footer from "./components/Footer"
 import shuffler from "./shuffler.js"
 import 'bootstrap/dist/css/bootstrap.min.css'
 import './index.css'
-
+import start from './start';
 
 const images = 
 [
@@ -59,18 +59,56 @@ const images =
     "clicked": 0
   }
 ]
-
-
-shuffler(images)
+start()
 
 class App extends Component {
   state = {
-    images
+    images,
+    score: 0,
+    topScore: 0,
+    correct: ""
   };
+
+  handleClick = event => {
+    let originalImages = images.slice(0)
+    shuffler(originalImages)
+    let arrayCopy = originalImages.slice(0)
+    this.setState({images: arrayCopy})
+    console.log("id " + event.target.id)
+    const index = event.target.id -= 1
+
+      if (originalImages[index].clicked) {
+        this.setState({correct: "you already got that one!"})
+        this.restartGame()    
+      } else {
+      this.handleIncrement()
+      this.setState({correct: "good choice!"})
+      originalImages[index].clicked = 1
+    }
+  }
+
+  restartGame = () => {
+    shuffler(images)
+    this.setState({ score: 0 })
+  }
+
+  handleIncrement = () => {
+    if (this.state.score >= this.state.topScore) {
+      this.setState({score: this.state.score + 1 });
+      this.setState({topScore: this.state.score + 1})
+    } else {this.setState({score: this.state.score + 1 })}
+  };
+
+
   render () {
     return (
       <div className = "wrapper">
-        <Nav></Nav>
+        <Nav 
+        score={this.state.score}
+        topScore={this.state.topScore}
+        correct={this.state.correct}>
+        
+        </Nav>
         <div className="container">
         <div className="photoDiv">
         <div className="row">
@@ -79,9 +117,12 @@ class App extends Component {
             <div className="row">
               {this.state.images.map(obj => (
                 <Photos
-                id={obj.id}
+
                 key={obj.image}
-                url={obj.image}
+                src={obj.image}
+                id={obj.id}
+
+                handleClick={this.handleClick}                
                 > </Photos>
                 ))}
                 </div>
